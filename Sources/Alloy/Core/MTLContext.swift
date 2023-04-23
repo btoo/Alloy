@@ -71,15 +71,18 @@ public final class MTLContext {
     ///   If user omits the flag, function will check image's color space and only assign true if it equals CGColorSpace.sRGB,
     ///   in all other cases MetalKit with decide on it on it's own
     ///   - usage: Usage parameter of texture
+    ///   - storageMode: Storage Mode parameter of texture, not that passing .private will cause GPU blit workload under the hood
     ///   - generateMipmaps: Boolean flag that indicated whether or not to generate mipmaps
     public func texture(from image: CGImage,
                         srgb: Bool? = nil,
                         usage: MTLTextureUsage = [.shaderRead],
+                        storageMode: MTLStorageMode = .shared,
                         generateMipmaps: Bool = false) throws -> MTLTexture {
         var options: [MTKTextureLoader.Option: Any] = [
-            .textureUsage: NSNumber(value: usage.rawValue),
             // You have to wrap everything inside NSNumber or it will be ignored
-            .generateMipmaps: NSNumber(value: generateMipmaps)
+            .textureUsage: NSNumber(value: usage.rawValue),
+            .generateMipmaps: NSNumber(value: generateMipmaps),
+            .textureStorageMode: NSNumber(value: storageMode.rawValue)
         ]
         
         // This may look a bit messy but actually handles all cases:
