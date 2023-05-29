@@ -54,6 +54,25 @@ public extension MTLCommandBuffer {
         self.render(descriptor: renderPassDescriptor, commands)
     }
     
+    func render(to texture: MTLTexture,
+                loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
+                storeAction: MTLStoreAction = .store,
+                depthAttachment: MTLTexture,
+                depthLoadAction: MTLRenderPassDepthAttachmentDescriptor.LoadAction = .clear(1.0),
+                depthStoreAction: MTLStoreAction = .dontCare,
+                _ commands: (MTLRenderCommandEncoder) -> Void) {
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].setLoadAction(loadAction)
+        renderPassDescriptor.colorAttachments[0].storeAction = storeAction
+
+        renderPassDescriptor.depthAttachment.texture = depthAttachment
+        renderPassDescriptor.depthAttachment.setLoadAction(depthLoadAction)
+        renderPassDescriptor.depthAttachment.storeAction = depthStoreAction
+        
+        self.render(descriptor: renderPassDescriptor, commands)
+    }
+    
     func render(descriptor: MTLRenderPassDescriptor,
                 _ commands: (MTLRenderCommandEncoder) -> Void) {
         guard let encoder = self.makeRenderCommandEncoder(descriptor: descriptor)
