@@ -54,6 +54,22 @@ public extension MTLCommandBuffer {
         self.render(descriptor: renderPassDescriptor, commands)
     }
     
+    @available(visionOS 1.0, iOS 13.0, *)
+    func render(to texture: MTLTexture,
+                with rasterizationMap: MTLRasterizationRateMap,
+                loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
+                storeAction: MTLStoreAction = .store,
+                _ commands: (MTLRenderCommandEncoder) -> Void) {
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].setLoadAction(loadAction)
+        renderPassDescriptor.colorAttachments[0].storeAction = storeAction
+        
+        renderPassDescriptor.rasterizationRateMap = rasterizationMap
+        
+        self.render(descriptor: renderPassDescriptor, commands)
+    }
+    
     func render(to texture: MTLTexture,
                 loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
                 storeAction: MTLStoreAction = .store,
@@ -69,6 +85,29 @@ public extension MTLCommandBuffer {
         renderPassDescriptor.depthAttachment.texture = depthAttachment
         renderPassDescriptor.depthAttachment.setLoadAction(depthLoadAction)
         renderPassDescriptor.depthAttachment.storeAction = depthStoreAction
+        
+        self.render(descriptor: renderPassDescriptor, commands)
+    }
+    
+    @available(visionOS 1.0, iOS 13, *)
+    func render(to texture: MTLTexture,
+                with rasterizationMap: MTLRasterizationRateMap,
+                loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
+                storeAction: MTLStoreAction = .store,
+                depthAttachment: MTLTexture,
+                depthLoadAction: MTLRenderPassDepthAttachmentDescriptor.LoadAction = .clear(1.0),
+                depthStoreAction: MTLStoreAction = .dontCare,
+                _ commands: (MTLRenderCommandEncoder) -> Void) {
+        let renderPassDescriptor = MTLRenderPassDescriptor()
+        renderPassDescriptor.colorAttachments[0].texture = texture
+        renderPassDescriptor.colorAttachments[0].setLoadAction(loadAction)
+        renderPassDescriptor.colorAttachments[0].storeAction = storeAction
+
+        renderPassDescriptor.depthAttachment.texture = depthAttachment
+        renderPassDescriptor.depthAttachment.setLoadAction(depthLoadAction)
+        renderPassDescriptor.depthAttachment.storeAction = depthStoreAction
+        
+        renderPassDescriptor.rasterizationRateMap = rasterizationMap
         
         self.render(descriptor: renderPassDescriptor, commands)
     }

@@ -13,7 +13,7 @@ public class TextureFillRenderer {
     /// Texture containig mask information.
     public var texture: MTLTexture? = nil
     /// Rectrangle described in a normalized coodrinate system.
-    public var normalizedRect: CGRect = .zero
+    public var normalizedRect: CGRect = .init(x: 0, y: 0, width: 1, height: 1)
 
     private let renderPipelineDescriptor: MTLRenderPipelineDescriptor
     private var renderPipelineStates: [MTLPixelFormat: MTLRenderPipelineState] = [:]
