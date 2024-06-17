@@ -54,7 +54,7 @@ public extension MTLCommandBuffer {
         self.render(descriptor: renderPassDescriptor, commands)
     }
     
-    @available(visionOS 1.0, iOS 13.0, *)
+    @available(visionOS 1.0, iOS 13.0, macOS 10.15.4, *)
     func render(to texture: MTLTexture,
                 with rasterizationMap: MTLRasterizationRateMap,
                 loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
@@ -89,7 +89,7 @@ public extension MTLCommandBuffer {
         self.render(descriptor: renderPassDescriptor, commands)
     }
     
-    @available(visionOS 1.0, iOS 13, *)
+    @available(visionOS 1.0, iOS 13, macOS 10.15.4, *)
     func render(to texture: MTLTexture,
                 with rasterizationMap: MTLRasterizationRateMap,
                 loadAction: MTLRenderPassColorAttachmentDescriptor.LoadAction = .clear(.clear),
